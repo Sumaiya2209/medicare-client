@@ -19,6 +19,7 @@ import {
   Envelope,
   LayoutCells,
 } from "@gravity-ui/icons";
+import { signOut, useSession } from "@/lib/auth-client";
 
 const navLinks = [
   {
@@ -43,8 +44,16 @@ const navLinks = [
   },
 ];
 
+const handleSignout = async () => {
+  await signOut(
+  );
+}
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const { data } = useSession();
+  const user = data?.user
+  console.log(user)
 
   return (
     <header className="sticky top-0 z-50 bg-[#0B1F3A] border-b w-full"
@@ -81,11 +90,17 @@ export default function Navbar() {
 
           {/* Right Side */}
           <div className="hidden lg:flex items-center gap-3">
-            <Link href="/auth/login">
-              <Button variant="bordered" className="font-bold text-white hover:bg-white hover:text-blue-950 transition-all duration-500 hover:scale-105">
-                Sign In
+            {user ?
+              <Button onClick={handleSignout}
+                variant="bordered" className="font-bold text-white hover:bg-white hover:text-blue-950 transition-all duration-500 hover:scale-105">
+                Sign Out
               </Button>
-            </Link>
+
+              : <Link href="/auth/signin">
+                <Button variant="bordered" className="font-bold text-white hover:bg-white hover:text-blue-950 transition-all duration-500 hover:scale-105">
+                  Sign In
+                </Button>
+              </Link>}
             <div className="w-px h-5 bg-gray-500" />
 
             <Link href="/auth/signup" className="ml-3">
@@ -133,19 +148,26 @@ export default function Navbar() {
               ))}
 
               <div className="flex flex-col gap-2 pt-3">
-                <Link href="/auth/login">
+                {user ?
                   <Button
                     variant="bordered"
                     className="w-full text-white hover:bg-white hover:text-blue-950 transition-all duration-500 hover:scale-105"
                   >
-                    Sign In
+                    Sign Out
                   </Button>
-                </Link>
+                  : <Link href="/auth/signin">
+                    <Button
+                      variant="bordered"
+                      className="w-full text-white hover:bg-white hover:text-blue-950 transition-all duration-500 hover:scale-105"
+                    >
+                      Sign In
+                    </Button>
+                  </Link>}
 
                 <Link href="/auth/signup">
                   <Button
-                    color="primary"
-                    className="w-full bg-white hover:text-blue-950 transition-all duration-500 hover:scale-105"
+                    variant="bordered"
+                    className="w-full bg-white text-blue-950 hover:text-blue-950 transition-all duration-500 hover:scale-105"
                   >
                     Sign Up
                   </Button>
