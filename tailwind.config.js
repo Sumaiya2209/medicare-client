@@ -1,4 +1,4 @@
-const { heroui } = require("@heroui/react");
+const { heroui } = require("@heroui/theme");
 
 module.exports = {
   content: [
@@ -7,3 +7,5 @@ module.exports = {
   ],
   plugins: [heroui()],
 };
+
+
