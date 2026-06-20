@@ -7,20 +7,36 @@ import { useSession } from "@/lib/auth-client";
 import Image from "next/image";
 
 export function DashBoardSideBar() {
-  const navItems = [
-    { icon: House, label: "Overview", active: true },
-    { icon: Magnifier, label: "My Appointments" },
-    { icon: Bell, label: "Payment History" },
-    { icon: Envelope, label: "My Reviews" },
-    { icon: Person, label: "Profile" },
-  ];
 
-  const { data } = useSession();
+   const { data } = useSession();
   const user = data?.user
   const name = user?.name || "User";
   const role = user?.role || "patient";
   const imageUrl = user?.image || "https://via.placeholder.com/150";
 
+
+ const navItems = [
+  { icon: House, label: "Overview", active: true },
+
+  ...(role === "patient"
+    ? [
+        { icon: Magnifier, label: "My Appointments" },
+        { icon: Bell, label: "Payment History" },
+      ]
+    : []),
+
+  ...(role === "doctor"
+    ? [
+        { icon: Bell, label: "Manage Schedule" },
+        { icon: Envelope, label: "Appointment Requests" },
+      ]
+    : []),
+
+  { icon: Envelope, label: "My Reviews" },
+  { icon: Person, label: "Profile" },
+];
+
+ 
   const handleSignout = async () => {
     await signOut();
     router.push("/");
@@ -29,16 +45,44 @@ export function DashBoardSideBar() {
   const navContent = (
     <div className="flex flex-col justify-between">
       <div >
-        <div className="flex items-center my-2 gap-4">
-          <div>
-            <Image src={imageUrl} alt="Profile Picture" width={100}
-            height={100} className="w-16 h-16 rounded-full mb-4" />
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold">{name}</h2>
-          <p className="text-sm text-white p-1 w-15 text-center rounded-full bg-blue-950 ">{role}</p>
-          </div>
-        </div>
+       <div className="flex items-center gap-4 mb-6 border rounded-2xl shadow-xl p-4">
+  <Image
+    src={imageUrl}
+    alt="Profile Picture"
+    width={64}
+    height={64}
+    className="
+      h-16 w-16
+      rounded-full
+      object-cover
+      ring-2 ring-blue-900
+    "
+  />
+
+  <div className="ml-3 ">
+    <h2 className="text-lg font-bold ">
+      {name}
+    </h2>
+
+    <p className="text-sm text-zinc-400">
+      Welcome back
+    </p>
+
+    <span
+      className="
+        mt-2 inline-flex
+        rounded-full
+        bg-blue-950
+        px-3 py-1
+        text-xs font-medium
+        text-blue-100
+        capitalize
+      "
+    >
+      {role}
+    </span>
+  </div>
+</div>
 
         {/* Top Button */}
         <Button className="mb-6 w-full bg-blue-950 text-white hover:bg-blue-950 p-6 font-bold rounded-2xl">
