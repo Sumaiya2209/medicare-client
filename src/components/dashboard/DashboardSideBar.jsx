@@ -1,112 +1,98 @@
-'use client'
+"use client";
 
 import { Bars, Bell, Envelope, Gear, House, LayoutSideContentLeft, Magnifier, Person } from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";
-import Navbar from "../Home/Navbar";
-import { useSession } from "@/lib/auth-client";
+import { useSession, signOut } from "@/lib/auth-client";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 
 export function DashBoardSideBar() {
+  const { data } = useSession();
+  const router = useRouter();
+  const pathname = usePathname();
 
-   const { data } = useSession();
-  const user = data?.user
+  const user = data?.user;
   const name = user?.name || "User";
   const role = user?.role || "patient";
   const imageUrl = user?.image || "https://via.placeholder.com/150";
 
+  const navItems = [
+    { icon: House, label: "Overview", href: "/dashboard/patient/overview" },
 
- const navItems = [
-  { icon: House, label: "Overview", active: true },
+    ...(role === "patient"
+      ? [
+          { icon: Magnifier, label: "My Appointments", href: "/dashboard/patient/appointment" },
+          { icon: Bell, label: "Payment History", href: "/dashboard/patient/payment" },
+        ]
+      : []),
 
-  ...(role === "patient"
-    ? [
-        { icon: Magnifier, label: "My Appointments" },
-        { icon: Bell, label: "Payment History" },
-      ]
-    : []),
+    ...(role === "doctor"
+      ? [
+          { icon: Bell, label: "Manage Schedule", href: "/dashboard/doctor/schedule" },
+          { icon: Envelope, label: "Appointment Requests", href: "/dashboard/doctor/requests" },
+        ]
+      : []),
 
-  ...(role === "doctor"
-    ? [
-        { icon: Bell, label: "Manage Schedule" },
-        { icon: Envelope, label: "Appointment Requests" },
-      ]
-    : []),
+    { icon: Envelope, label: "My Reviews", href: "/dashboard/patient/reviews" },
+    { icon: Person, label: "Profile", href: "/dashboard/profile" },
+  ];
 
-  { icon: Envelope, label: "My Reviews" },
-  { icon: Person, label: "Profile" },
-];
-
- 
   const handleSignout = async () => {
     await signOut();
     router.push("/");
-  }
+  };
 
   const navContent = (
     <div className="flex flex-col justify-between">
-      <div >
-       <div className="flex items-center gap-4 mb-6 border rounded-2xl shadow-xl p-4">
-  <Image
-    src={imageUrl}
-    alt="Profile Picture"
-    width={64}
-    height={64}
-    className="
-      h-16 w-16
-      rounded-full
-      object-cover
-      ring-2 ring-blue-900
-    "
-  />
+      <div>
+        <div className="flex items-center gap-4 mb-6 border rounded-2xl shadow-xl p-4">
+          <Image
+            src={imageUrl}
+            alt="Profile Picture"
+            width={64}
+            height={64}
+            className="h-16 w-16 rounded-full object-cover ring-2 ring-blue-900"
+          />
 
-  <div className="ml-3 ">
-    <h2 className="text-lg font-bold ">
-      {name}
-    </h2>
-
-    <p className="text-sm text-zinc-400">
-      Welcome back
-    </p>
-
-    <span
-      className="
-        mt-2 inline-flex
-        rounded-full
-        bg-blue-950
-        px-3 py-1
-        text-xs font-medium
-        text-blue-100
-        capitalize
-      "
-    >
-      {role}
-    </span>
-  </div>
-</div>
+          <div className="ml-3 ">
+            <h2 className="text-lg font-bold ">{name}</h2>
+            <p className="text-sm text-zinc-400">Welcome back</p>
+            <span className="mt-2 inline-flex rounded-full bg-blue-950 px-3 py-1 text-xs font-medium text-blue-100 capitalize">
+              {role}
+            </span>
+          </div>
+        </div>
 
         {/* Top Button */}
-        <Button className="mb-6 w-full bg-blue-950 text-white hover:bg-blue-950 p-6 font-bold rounded-2xl">
+        <Link
+          href="/bookappointment"
+          className="mb-6 w-full bg-blue-950 text-white hover:bg-blue-950 p-6 font-bold rounded-2xl block text-center"
+        >
           + Book Appointment
-        </Button>
+        </Link>
 
         {/* Menu */}
         <nav className="space-y-1">
-          {navItems.map((item) => (
-            <button
-              key={item.label}
-              type="button"
-              className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all
-              
-              ${item.active
-                  ? "bg-blue-950 text-white"
-                  : "text-gray-800 hover:bg-blue-950 hover:text-white"
-                }
-            `}
-            >
-              <item.icon className="h-5 w-5" />
-              {item.label}
-            </button>
-          ))}
+          {navItems.map((item) => {
+            const isActive = pathname === item.href;
+
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all
+                  ${isActive
+                    ? "bg-blue-950 text-white"
+                    : "text-gray-800 hover:bg-blue-950 hover:text-white"
+                  }
+                `}
+              >
+                <item.icon className="h-5 w-5" />
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
       </div>
 
@@ -149,9 +135,7 @@ export function DashBoardSideBar() {
               <Drawer.Header>
                 <Drawer.Heading>Navigation</Drawer.Heading>
               </Drawer.Header>
-              <Drawer.Body>
-                {navContent}
-              </Drawer.Body>
+              <Drawer.Body>{navContent}</Drawer.Body>
             </Drawer.Dialog>
           </Drawer.Content>
         </Drawer.Backdrop>

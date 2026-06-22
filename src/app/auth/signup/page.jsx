@@ -105,31 +105,62 @@ export default function RegisterPage() {
         password: form.password,
         role: form.role,
         image: form.image,
-        ...(form.role === "doctor" && {
-          specialization: form.specialization,
-          qualifications: form.qualifications,
-          experience: form.experience,
-          consultationFee: form.consultationFee,
-          hospitalName: form.hospitalName,
-        }),
-      })
-      console.log(data)
+      });
 
       if (error) {
         setFormStatus({
           type: "error",
           message: error.message || "Sign up failed. Please try again.",
         });
-      } else {
-        setFormStatus({
-          type: "success",
-          message: "Account created! Redirecting...",
+        return;
+      }
+
+      if (form.role === "doctor" && data?.user?.id) {
+        const baseUrl = process.env.NEXT_PUBLIC_AUTH_URL;
+        const doctorRes = await fetch(`${baseUrl}/api/doctors`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: data.user.id,
+            doctorName: form.name.trim(),
+            email: form.email.trim(),
+            specialization: form.specialization,
+            qualifications: form.qualifications,
+            experience: Number(form.experience),
+            consultationFee: Number(form.consultationFee),
+            hospitalName: form.hospitalName,
+            profileImage: form.image,
+            verificationStatus: "pending",
+            rating: 0,
+            createdAt: new Date(),
+          }),
         });
 
-        setTimeout(() => {
-          router.push("/");
-        }, 1500);
+        if (!doctorRes.ok) {
+          setFormStatus({
+            type: "error",
+            message: "Account created, but doctor profile failed to save.",
+          });
+          return;
+        }
       }
+
+      setFormStatus({
+        type: "success",
+        message: "Account created! Redirecting...",
+      });
+
+      setTimeout(() => {
+          if (data?.user?.role === "patient") {
+            router.push("/dashboard/patient");
+          } else if (data?.user?.role === "doctor") {
+            router.push("/dashboard/doctor");
+          } else {
+            router.push("/");
+          }
+
+          router.refresh();
+      }, 1500);
     } catch (error) {
       console.error("Signup error:", error);
       setFormStatus({
@@ -145,7 +176,7 @@ export default function RegisterPage() {
     <section className="min-h-screen bg-gradient-to-br from-cyan-50 via-white to-blue-100 flex items-center justify-center px-4 py-10">
       <Card className="w-full max-w-2xl shadow-2xl border border-default-200">
         <Card.Header className="items-center text-center pt-8 pb-2">
-          <Card.Title className="text-4xl font-bold">Sign Up</Card.Title>
+          <Card.Title className="text-4xl font-bold mb-6">Sign Up</Card.Title>
           <Card.Description>Create your account</Card.Description>
         </Card.Header>
 

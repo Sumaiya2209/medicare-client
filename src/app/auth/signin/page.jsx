@@ -13,7 +13,7 @@ import {
 } from "@heroui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { authClient } from "@/lib/auth-client";
+import { authClient, useSession } from "@/lib/auth-client";
 
 export default function LoginPage() {
   const [form, setForm] = useState({
@@ -21,6 +21,8 @@ export default function LoginPage() {
     password: "",
     rememberMe: false,
   });
+
+  const user = useSession();
 
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -98,9 +100,15 @@ export default function LoginPage() {
         });
 
         setTimeout(() => {
-          router.push("/");
+          if (data?.user?.role === "patient") {
+            router.push("/dashboard/patient");
+          } else if (data?.user?.role === "doctor") {
+            router.push("/dashboard/doctor");
+          } else {
+            router.push("/");
+          }
+
           router.refresh();
-         
         }, 1000);
       }
     } catch (error) {
@@ -131,8 +139,8 @@ export default function LoginPage() {
             {formStatus && (
               <div
                 className={`rounded-xl border px-4 py-3 ${formStatus.type === "success"
-                    ? "border-success bg-success/10 text-success"
-                    : "border-danger bg-danger/10 text-danger"
+                  ? "border-success bg-success/10 text-success"
+                  : "border-danger bg-danger/10 text-danger"
                   }`}
               >
                 {formStatus.message}

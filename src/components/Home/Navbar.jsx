@@ -33,7 +33,7 @@ const navLinks = [
   },
   {
     label: "Find Doctors",
-    href: "/doctors",
+    href: "/auth/finddoctors",
     icon: Stethoscope,
   },
   {

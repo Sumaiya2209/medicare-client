@@ -1,74 +1,57 @@
-import StatsGrid from "@/components/dashboard/StatsGrid";
-import UpcomingAppointments from "@/components/dashboard/PatientUpcomingAppointments";
+"use client";
 
-import {
-  HeartPulse,
-  Stethoscope,
-  Person,
-} from "@gravity-ui/icons";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-const appointments = [
-  {
-    id: 1,
-    doctorName: "Dr. Anika Hossain",
-    specialty: "Cardiology",
-    hospital: "Apollo Hospital",
-    date: "Jun 23",
-    time: "10:30",
-    status: "Confirmed",
-    icon: <HeartPulse />,
-  },
-  {
-    id: 2,
-    doctorName: "Dr. Farhan Kabir",
-    specialty: "Neurology",
-    hospital: "Square Hospital",
-    date: "Jun 27",
-    time: "16:00",
-    status: "Pending Payment",
-    icon: <Stethoscope />,
-  },
-  {
-    id: 3,
-    doctorName: "Dr. Nusrat Jahan",
-    specialty: "Orthopedics",
-    hospital: "United Hospital",
-    date: "Jul 02",
-    time: "09:15",
-    status: "Confirmed",
-    icon: <Person />,
-  },
-];
+export default function Page() {
+  const router = useRouter();
 
-const patientStats = [
-  {
-    title: "Upcoming",
-    value: 3,
-  },
-  {
-    title: "Past Visits",
-    value: 12,
-  },
-  {
-    title: "Total Paid",
-    value: 840,
-    suffix: "$",
-  },
-  {
-    title: "Favorite Doctors",
-    value: 4,
-  },
-];
-const PatientHomePage = () => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      router.push("/dashboard/patient/overview");
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [router]);
+
+  const dotVariants = {
+    jump: {
+      y: -30,
+      transition: {
+        duration: 0.5,
+        repeat: Infinity,
+        repeatType: "reverse",
+        ease: "easeInOut",
+      },
+    },
+  };
+
   return (
-    <div>
-      <StatsGrid stats={patientStats} />
-       <UpcomingAppointments
-      appointments={appointments}
-    />
-      
+    <div className="min-h-screen flex items-center justify-center">
+      <motion.div
+        className="flex items-center gap-3"
+        animate="jump"
+        transition={{
+          staggerChildren: 0.15,
+          staggerDirection: 1,
+        }}
+      >
+        <motion.div
+          className="w-5 h-5 rounded-full bg-emerald-600"
+          variants={dotVariants}
+        />
+
+        <motion.div
+          className="w-5 h-5 rounded-full bg-emerald-600"
+          variants={dotVariants}
+        />
+
+        <motion.div
+          className="w-5 h-5 rounded-full bg-emerald-600"
+          variants={dotVariants}
+        />
+      </motion.div>
     </div>
   );
-};
-
-export default PatientHomePage;
+}
