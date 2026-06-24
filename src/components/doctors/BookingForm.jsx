@@ -3,9 +3,11 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import { bookAppointment } from "@/lib/api/appointments";
 import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation"; 
 
 export default function BookingForm({ doctor }) {
   const { data: session } = authClient.useSession();
+  const router = useRouter();
 
   const [form, setForm] = useState({
     appointmentDate: "",
@@ -31,7 +33,7 @@ export default function BookingForm({ doctor }) {
 
     setLoading(true);
     try {
-      await bookAppointment({
+      const result = await bookAppointment({
         patientId: session.user.id,
         doctorId: doctor._id,
         appointmentDate: form.appointmentDate,
@@ -39,8 +41,8 @@ export default function BookingForm({ doctor }) {
         symptoms: form.symptoms,
       });
 
-      toast.success("Appointment booked successfully!");
-      setForm({ appointmentDate: "", appointmentTime: "", symptoms: "" });
+      toast.success("Redirecting to payment...");
+      router.push(`/payment/${result.insertedId}`);
     } catch (err) {
       toast.error(err.message || "Something went wrong");
     } finally {

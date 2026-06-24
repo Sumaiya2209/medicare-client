@@ -9,7 +9,7 @@ const DashboardLayout = ({ children }) => {
             <DashBoardSideBar />
             <div className="flex-1">
                 {children}
-                <Toaster position="top-right" />
+                <Toaster position="top-right" className="text-blue-950"/>
             </div>
         </div>
     );

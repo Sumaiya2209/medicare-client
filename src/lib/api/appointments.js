@@ -4,6 +4,7 @@ export const bookAppointment = async (appointmentData) => {
   const response = await fetch(`${baseUrl}/api/appointments`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    credentials: "include", 
     body: JSON.stringify(appointmentData),
   });
 
@@ -17,7 +18,21 @@ export const bookAppointment = async (appointmentData) => {
 
 
 export const getPatientAppointments = async (patientId) => {
-  const response = await fetch(`${baseUrl}/api/appointments/patient/${patientId}`);
-  if (!response.ok) throw new Error("Failed to fetch appointments");
-  return response.json();
+  const response = await fetch(
+    `${baseUrl}/api/appointments/patient/${patientId}`
+    , {
+      credentials: "include", 
+    }
+  );
+
+  console.log("Status:", response.status);
+
+  const data = await response.json();
+  console.log("Response:", data);
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch appointments");
+  }
+
+  return data;
 };

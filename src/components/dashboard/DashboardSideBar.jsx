@@ -23,7 +23,7 @@ export function DashBoardSideBar() {
     ...(role === "patient"
       ? [
           { icon: Magnifier, label: "My Appointments", href: "/dashboard/patient/appointment" },
-          { icon: Bell, label: "Payment History", href: "/dashboard/patient/payment" },
+          { icon: Bell, label: "Payment History", href: "/dashboard/patient/paymenthistory" },
         ]
       : []),
 
@@ -66,7 +66,7 @@ export function DashBoardSideBar() {
 
         {/* Top Button */}
         <Link
-          href="/bookappointment"
+          href="/auth/finddoctors"
           className="mb-6 w-full bg-blue-950 text-white hover:bg-blue-950 p-6 font-bold rounded-2xl block text-center"
         >
           + Book Appointment
