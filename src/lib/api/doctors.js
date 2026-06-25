@@ -29,3 +29,12 @@ export const getDoctorById = async (id) => {
   if (!response.ok) throw new Error("Failed to fetch doctor");
   return response.json();
 };
+
+export const getDoctorByUserId = async (userId) => {
+  const res = await fetch(
+    `${baseUrl}/api/doctors/user/${userId}`,
+    { credentials: "include" }
+  );
+  if (!res.ok) throw new Error("Failed to fetch doctor profile");
+  return res.json();
+};

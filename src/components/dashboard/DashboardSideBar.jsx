@@ -1,6 +1,6 @@
 "use client";
 
-import { Bars, Bell, Envelope, Gear, House, LayoutSideContentLeft, Magnifier, Person } from "@gravity-ui/icons";
+import {  Bell, Envelope, Gear, House, LayoutSideContentLeft, Magnifier, Person, Stethoscope } from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";
 import { useSession, signOut } from "@/lib/auth-client";
 import Image from "next/image";
@@ -8,34 +8,55 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 export function DashBoardSideBar() {
-  const { data } = useSession();
+  const { data, isPending } = useSession();
   const router = useRouter();
   const pathname = usePathname();
 
+  if (isPending) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-gray-500">Loading...</p>
+      </div>
+    );
+  }
   const user = data?.user;
   const name = user?.name || "User";
-  const role = user?.role || "patient";
+  const role = user?.role;
   const imageUrl = user?.image || "https://via.placeholder.com/150";
 
   const navItems = [
-    { icon: House, label: "Overview", href: "/dashboard/patient/overview" },
 
     ...(role === "patient"
       ? [
-          { icon: Magnifier, label: "My Appointments", href: "/dashboard/patient/appointment" },
-          { icon: Bell, label: "Payment History", href: "/dashboard/patient/paymenthistory" },
-        ]
+        { icon: House, label: "Overview", href: "/dashboard/patient/overview" },
+        { icon: Magnifier, label: "My Appointments", href: "/dashboard/patient/appointment" },
+        { icon: Bell, label: "Payment History", href: "/dashboard/patient/paymenthistory" },
+        { icon: Envelope, label: "My Reviews", href: "/dashboard/patient/reviews" },
+        { icon: Person, label: "Profile", href: "/dashboard/profile" },
+      ]
       : []),
 
     ...(role === "doctor"
       ? [
-          { icon: Bell, label: "Manage Schedule", href: "/dashboard/doctor/schedule" },
-          { icon: Envelope, label: "Appointment Requests", href: "/dashboard/doctor/requests" },
-        ]
+        { icon: House, label: "Overview", href: "/dashboard/doctor/overview" },
+        { icon: Bell, label: "Manage Schedule", href: "/dashboard/doctor/schedule" },
+        { icon: Envelope, label: "Appointment Requests", href: "/dashboard/doctor/appointments" },
+        { icon: Envelope, label: "My Reviews", href: "/dashboard/doctor/reviews" },
+        { icon: Person, label: "Profile", href: "/dashboard/profile" },
+      ]
       : []),
 
-    { icon: Envelope, label: "My Reviews", href: "/dashboard/patient/reviews" },
-    { icon: Person, label: "Profile", href: "/dashboard/profile" },
+    ...(role === "admin"
+      ? [
+        { icon: House, label: "Overview", href: "/dashboard/admin/overview" },
+        { icon: Person, label: "Manage Users", href: "/dashboard/admin/users" },
+        { icon: Stethoscope, label: "Manage Doctors", href: "/dashboard/admin/doctors" },
+        { icon: Magnifier, label: "Appointments", href: "/dashboard/admin/appointments" },
+        { icon: Envelope, label: "My Reviews", href: "/dashboard/admin/reviews" },
+        { icon: Person, label: "Profile", href: "/dashboard/profile" },
+      ]
+      : []),
+
   ];
 
   const handleSignout = async () => {

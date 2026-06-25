@@ -25,7 +25,7 @@ export default function CheckoutForm({ appointmentId, amount, doctorName, client
       const card = elements.getElement(CardElement);
 
       const { paymentIntent, error: stripeError } = await stripe.confirmCardPayment(
-        clientSecret, // ⬅️ props theke directly use korchi
+        clientSecret, 
         {
           payment_method: { card },
         }
@@ -36,11 +36,10 @@ export default function CheckoutForm({ appointmentId, amount, doctorName, client
         return;
       }
 
-      // Payment success hole DB update
       await confirmPayment(appointmentId, paymentIntent.id);
 
       setSuccess(true);
-      setTimeout(() => router.push("/dashboard/patients"), 2000);
+      setTimeout(() => router.push("/dashboard/patient"), 2000);
     } catch (err) {
       setError(err.message);
     } finally {

@@ -9,7 +9,7 @@ export default function Page() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push("/dashboard/doctor/overview");
+      router.push("/dashboard/admin/overview");
     }, 1000);
 
     return () => clearTimeout(timer);

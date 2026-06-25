@@ -105,7 +105,7 @@ export default function LoginPage() {
           } else if (data?.user?.role === "doctor") {
             router.push("/dashboard/doctor");
           } else {
-            router.push("/");
+            router.push("/dashboard/admin");
           }
 
           router.refresh();
@@ -185,7 +185,7 @@ export default function LoginPage() {
 
             <p className="text-center text-sm text-default-500">
               Don&apos;t have an account?{" "}
-              <Link href="/register" className="text-primary underline text-blue-500 hover:text-blue-800">
+              <Link href="/auth/signup" className="text-primary underline text-blue-500 hover:text-blue-800">
                 Sign up
               </Link>
             </p>

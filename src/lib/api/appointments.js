@@ -4,7 +4,7 @@ export const bookAppointment = async (appointmentData) => {
   const response = await fetch(`${baseUrl}/api/appointments`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    credentials: "include", 
+    credentials: "include",
     body: JSON.stringify(appointmentData),
   });
 
@@ -21,7 +21,7 @@ export const getPatientAppointments = async (patientId) => {
   const response = await fetch(
     `${baseUrl}/api/appointments/patient/${patientId}`
     , {
-      credentials: "include", 
+      credentials: "include",
     }
   );
 
@@ -35,4 +35,27 @@ export const getPatientAppointments = async (patientId) => {
   }
 
   return data;
+};
+
+export const getDoctorAppointments = async (doctorId) => {
+  const res = await fetch(
+    `${baseUrl}/api/appointments/doctor/${doctorId}`,
+    { credentials: "include" }
+  );
+  if (!res.ok) throw new Error("Failed to fetch doctor appointments");
+  return res.json();
+};
+
+export const updateAppointmentStatus = async (appointmentId, status) => {
+  const res = await fetch(
+    `${baseUrl}/api/appointments/${appointmentId}/status`,
+    {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ status }),
+    }
+  );
+  if (!res.ok) throw new Error("Failed to update appointment status");
+  return res.json();
 };
