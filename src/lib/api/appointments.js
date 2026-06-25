@@ -59,3 +59,29 @@ export const updateAppointmentStatus = async (appointmentId, status) => {
   if (!res.ok) throw new Error("Failed to update appointment status");
   return res.json();
 };
+
+export const cancelAppointment = async (appointmentId) => {
+  const res = await fetch(
+    `${baseUrl}/api/appointments/${appointmentId}/cancel`,
+    {
+      method: "PATCH",
+      credentials: "include",
+    }
+  );
+  if (!res.ok) throw new Error("Failed to cancel appointment");
+  return res.json();
+};
+
+export const rescheduleAppointment = async (appointmentId, appointmentDate, appointmentTime) => {
+  const res = await fetch(
+    `${baseUrl}/api/appointments/${appointmentId}/reschedule`,
+    {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ appointmentDate, appointmentTime }),
+    }
+  );
+  if (!res.ok) throw new Error("Failed to reschedule appointment");
+  return res.json();
+};
