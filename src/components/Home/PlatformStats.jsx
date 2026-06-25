@@ -45,7 +45,7 @@ export default function PlatformStats() {
     : [];
 
   return (
-    <section className="bg-emerald-700 py-16 px-4">
+    <section className="bg-blue-950 max-w-7xl mx-auto rounded-3xl p-10 my-20 py-16">
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}

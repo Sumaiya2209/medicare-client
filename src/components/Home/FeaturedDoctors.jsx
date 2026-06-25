@@ -26,16 +26,16 @@ export default function FeaturedDoctors() {
   }, []);
 
   return (
-    <section className="py-16 px-4 max-w-7xl mx-auto">
+    <section className="py-16 px-4 max-w-7xl mx-auto my-10">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
-        className="text-center mb-10"
+        className="text-center mb-15"
       >
-        <h2 className="text-3xl font-bold text-gray-900">
+        <h2 className="text-4xl font-bold text-gray-900">
           Meet Our Featured Doctors
         </h2>
         <p className="text-gray-500 mt-2">
@@ -68,7 +68,7 @@ export default function FeaturedDoctors() {
                   href={`/find-doctors/${doctor._id}`}
                   className="block overflow-hidden rounded-2xl border border-gray-200 bg-white hover:shadow-lg transition-shadow"
                 >
-                  <div className="relative h-44 w-full">
+                  <div className="relative h-65 lg:h-44 w-full">
                     <Image
                       src={doctor.profileImage || "/placeholder-doctor.jpg"}
                       alt={doctor.doctorName}
@@ -103,7 +103,7 @@ export default function FeaturedDoctors() {
       <div className="text-center mt-8">
         <Link
           href="/find-doctors"
-          className="inline-block bg-emerald-700 text-white px-6 py-3 rounded-xl font-medium hover:bg-emerald-800 transition-colors"
+          className="inline-block bg-blue-950 text-white px-6 py-3 rounded-xl font-medium hover:bg-emerald-800 transition-colors"
         >
           View All Doctors →
         </Link>
