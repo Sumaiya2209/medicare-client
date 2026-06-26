@@ -16,8 +16,8 @@ A modern full-stack healthcare platform connecting patients with doctors through
 
 | Repo | Link |
 |------|------|
-| Client (Frontend) | [GitHub Client Repo](#) |
-| Server (Backend) | [GitHub Server Repo](#) |
+| Client (Frontend) | [https://github.com/Sumaiya2209/medicare-client](#) |
+| Server (Backend) | [https://github.com/Sumaiya2209/medicare-server](#) |
 
 ---
 
