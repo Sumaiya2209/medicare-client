@@ -38,3 +38,14 @@ export const getDoctorByUserId = async (userId) => {
   if (!res.ok) throw new Error("Failed to fetch doctor profile");
   return res.json();
 };
+
+export const updateDoctorProfile = async (userId, profileData) => {
+  const res = await fetch(`${baseUrl}/api/doctors/user/${userId}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(profileData),
+  });
+  if (!res.ok) throw new Error("Failed to update profile");
+  return res.json();
+};

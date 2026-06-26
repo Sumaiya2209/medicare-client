@@ -1,21 +1,40 @@
 "use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { useState } from "react";
-import { bookAppointment } from "@/lib/api/appointments";
+import { bookAppointment, getBookedSlots } from "@/lib/api/appointments";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation"; 
 
 export default function BookingForm({ doctor }) {
-  const { data: session } = authClient.useSession();
   const router = useRouter();
+  const { data: session } = authClient.useSession();
 
   const [form, setForm] = useState({
     appointmentDate: "",
     appointmentTime: "",
     symptoms: "",
   });
+
+  const [bookedSlots, setBookedSlots] = useState([]);
+  const [loadingSlots, setLoadingSlots] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState(null);
+
+  const slots = doctor.availableSlots || [];
+  const today = new Date().toISOString().split("T")[0];
+
+  // Date select korle booked slots fetch koro
+  useEffect(() => {
+    if (!form.appointmentDate || !doctor._id) return;
+
+    setLoadingSlots(true);
+    setForm((prev) => ({ ...prev, appointmentTime: "" })); // time reset
+
+    getBookedSlots(doctor._id, form.appointmentDate)
+      .then(setBookedSlots)
+      .catch(() => setBookedSlots([]))
+      .finally(() => setLoadingSlots(false));
+  }, [form.appointmentDate, doctor._id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,10 +43,14 @@ export default function BookingForm({ doctor }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus(null);
 
     if (!session?.user) {
       toast.error("Please login to book an appointment.");
+      return;
+    }
+
+    if (!form.appointmentTime) {
+      toast.error("Please select a time slot.");
       return;
     }
 
@@ -50,6 +73,8 @@ export default function BookingForm({ doctor }) {
     }
   };
 
+  const availableCount = slots.filter((s) => !bookedSlots.includes(s)).length;
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -57,17 +82,7 @@ export default function BookingForm({ doctor }) {
     >
       <h2 className="text-xl font-semibold">Book Appointment</h2>
 
-      {status && (
-        <div
-          className={`text-sm rounded-lg px-3 py-2 ${status.type === "success"
-            ? "bg-emerald-100 text-emerald-700"
-            : "bg-red-100 text-red-700"
-            }`}
-        >
-          {status.message}
-        </div>
-      )}
-
+      {/* Date */}
       <div>
         <label className="text-sm text-gray-600">Appointment Date</label>
         <input
@@ -75,23 +90,71 @@ export default function BookingForm({ doctor }) {
           name="appointmentDate"
           value={form.appointmentDate}
           onChange={handleChange}
+          min={today}
           required
           className="w-full border rounded-lg p-2 mt-1"
         />
       </div>
 
+      {/* Time Slots */}
       <div>
-        <label className="text-sm text-gray-600">Appointment Time</label>
-        <input
-          type="time"
-          name="appointmentTime"
-          value={form.appointmentTime}
-          onChange={handleChange}
-          required
-          className="w-full border rounded-lg p-2 mt-1"
-        />
+        <label className="text-sm text-gray-600">
+          Select Time Slot
+          {form.appointmentDate && (
+            <span className="ml-2 text-xs text-emerald-600">
+              ({availableCount} slots available)
+            </span>
+          )}
+        </label>
+
+        {!form.appointmentDate ? (
+          <p className="text-sm text-gray-400 mt-1 border rounded-lg p-2">
+            Please select a date first
+          </p>
+        ) : loadingSlots ? (
+          <p className="text-sm text-gray-400 mt-1 border rounded-lg p-2">
+            Checking available slots...
+          </p>
+        ) : slots.length === 0 ? (
+          <p className="text-sm text-gray-400 mt-1">
+            No slots available for this doctor.
+          </p>
+        ) : (
+          /* Slot buttons */
+          <div className="grid grid-cols-3 gap-2 mt-2">
+            {slots.map((slot) => {
+              const isBooked = bookedSlots.includes(slot);
+              const isSelected = form.appointmentTime === slot;
+
+              return (
+                <button
+                  key={slot}
+                  type="button"
+                  disabled={isBooked}
+                  onClick={() =>
+                    !isBooked &&
+                    setForm((prev) => ({ ...prev, appointmentTime: slot }))
+                  }
+                  className={`py-2 px-3 rounded-lg text-sm font-medium transition-all border
+                    ${isBooked
+                      ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed line-through"
+                      : isSelected
+                      ? "bg-emerald-700 text-white border-emerald-700"
+                      : "bg-white text-gray-700 border-gray-300 hover:border-emerald-500 hover:text-emerald-600"
+                    }`}
+                >
+                  {slot}
+                  {isBooked && (
+                    <span className="block text-xs font-normal">Booked</span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
 
+      {/* Symptoms */}
       <div>
         <label className="text-sm text-gray-600">Symptoms</label>
         <textarea
@@ -106,7 +169,7 @@ export default function BookingForm({ doctor }) {
 
       <button
         type="submit"
-        disabled={loading}
+        disabled={loading || !form.appointmentTime || slots.length === 0}
         className="w-full bg-emerald-700 text-white rounded-lg py-2 font-medium disabled:opacity-50"
       >
         {loading ? "Booking..." : "Confirm Appointment"}

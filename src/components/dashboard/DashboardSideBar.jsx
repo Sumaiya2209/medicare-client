@@ -42,7 +42,7 @@ export function DashBoardSideBar() {
         { icon: Bell, label: "Manage Schedule", href: "/dashboard/doctor/schedule" },
         { icon: Envelope, label: "Appointment Requests", href: "/dashboard/doctor/appointments" },
         { icon: Envelope, label: "My Reviews", href: "/dashboard/doctor/reviews" },
-        { icon: Person, label: "Profile", href: "/dashboard/profile" },
+        { icon: Person, label: "Profile", href: "/dashboard/doctor/profile" },
       ]
       : []),
 

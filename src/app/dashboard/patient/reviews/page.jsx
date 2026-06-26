@@ -171,12 +171,12 @@ export default function MyReviewsPage() {
     ])
       .then(([reviewsData, appointmentsData]) => {
         setReviews(reviewsData);
+        console.log("Appointments:", appointmentsData); 
 
         // Completed appointments theke unique doctors ber koro
         const uniqueDoctors = [];
         const seen = new Set();
         appointmentsData
-          .filter((a) => a.appointmentStatus === "completed")
           .forEach((a) => {
             if (a.doctorInfo && !seen.has(a.doctorId)) {
               seen.add(a.doctorId);

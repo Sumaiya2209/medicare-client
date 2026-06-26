@@ -85,3 +85,11 @@ export const rescheduleAppointment = async (appointmentId, appointmentDate, appo
   if (!res.ok) throw new Error("Failed to reschedule appointment");
   return res.json();
 };
+
+export const getBookedSlots = async (doctorId, date) => {
+  const res = await fetch(
+    `${baseUrl}/api/appointments/booked-slots?doctorId=${doctorId}&date=${date}`
+  );
+  if (!res.ok) throw new Error("Failed to fetch booked slots");
+  return res.json();
+};
