@@ -9,6 +9,8 @@ import { Button } from "@heroui/react";
 
 import { Icon } from "@gravity-ui/uikit";
 import { Dropdown } from "@heroui/react";
+import ThemeToggle from "@/components/Home/ThemeToggle";
+
 
 
 import {
@@ -101,7 +103,9 @@ export default function Navbar() {
             {user ? (
               <Dropdown>
                 <Button
-                  className="bg-white text-blue-950 font-semibold "
+                  className="bg-white text-blue-950 font-semibold  
+                   transition-all duration-500 hover:scale-105
+                   dark:bg-white "
                   aria-label="Menu"
                   variant="flat"
                 >
@@ -158,6 +162,8 @@ export default function Navbar() {
                   </Link>
                 </>
               )}
+              <ThemeToggle />
+
           </div>
 
           {/* Mobile Toggle */}

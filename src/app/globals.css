@@ -1,3 +1,125 @@
 @import "tailwindcss";
 @import "@heroui/styles"; 
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: 255 255 255;
+    --bg-secondary: 249 250 251;
+    --bg-card: 255 255 255;
+    --text-primary: 17 24 39;
+    --text-secondary: 107 114 128;
+    --border-color: 229 231 235;
+    --input-bg: 255 255 255;
+  }
+
+  .dark {
+    --bg-primary: 3 7 18;
+    --bg-secondary: 17 24 39;
+    --bg-card: 31 41 55;
+    --text-primary: 243 244 246;
+    --text-secondary: 156 163 175;
+    --border-color: 55 65 81;
+    --input-bg: 31 41 55;
+  }
+
+  body {
+    background-color: rgb(var(--bg-primary));
+    color: rgb(var(--text-primary));
+  }
+
+  /* Cards */
+  .card {
+    background-color: rgb(var(--bg-card));
+    border: 1px solid rgb(var(--border-color));
+    border-radius: 1rem;
+  }
+
+  /* All white backgrounds */
+  .bg-white {
+    background-color: rgb(var(--bg-card)) !important;
+  }
+
+  /* All light gray backgrounds */
+  .bg-gray-50 {
+    background-color: rgb(var(--bg-secondary)) !important;
+  }
+
+  .bg-gray-100 {
+    background-color: rgb(var(--bg-secondary)) !important;
+  }
+
+  /* All dark texts */
+  .text-gray-900 {
+    color: rgb(var(--text-primary)) !important;
+  }
+
+  .text-gray-800 {
+    color: rgb(var(--text-primary)) !important;
+  }
+
+  /* All secondary texts */
+  .text-gray-500 {
+    color: rgb(var(--text-secondary)) !important;
+  }
+
+  .text-gray-600 {
+    color: rgb(var(--text-secondary)) !important;
+  }
+
+  /* All borders */
+  .border-gray-200 {
+    border-color: rgb(var(--border-color)) !important;
+  }
+
+  .border-gray-300 {
+    border-color: rgb(var(--border-color)) !important;
+  }
+
+  /* Inputs */
+  input,
+  textarea,
+  select {
+    background-color: rgb(var(--input-bg));
+    color: rgb(var(--text-primary));
+    border-color: rgb(var(--border-color));
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: rgb(var(--text-secondary));
+  }
+
+  /* Tables */
+  table {
+    background-color: rgb(var(--bg-card));
+    color: rgb(var(--text-primary));
+  }
+
+  thead {
+    background-color: rgb(var(--bg-secondary));
+  }
+
+  /* Dividers */
+  .divide-y > * + * {
+    border-color: rgb(var(--border-color));
+  }
+
+  /* Border top/bottom */
+  .border-t,
+  .border-b {
+    border-color: rgb(var(--border-color));
+  }
+
+  /* Shadow in dark mode soften */
+  .dark .shadow-lg {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.4);
+  }
+
+  .dark .shadow-sm {
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  }
+}
