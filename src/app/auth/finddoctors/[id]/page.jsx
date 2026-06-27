@@ -48,9 +48,22 @@ export default function DoctorDetailsPage() {
       </div>
 
       {/* Booking Form */}
-      <div>
-        <BookingForm doctor={doctor} />
-      </div>
+<div>
+  {doctor.verificationStatus === "verified" ? (
+    <BookingForm doctor={doctor} />
+  ) : (
+    <div className="border rounded-xl p-6 bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-700 text-center">
+      <p className="text-4xl mb-3">⏳</p>
+      <h3 className="font-semibold text-yellow-800 dark:text-yellow-400 text-lg">
+        Doctor Not Verified Yet
+      </h3>
+      <p className="text-sm text-yellow-600 dark:text-yellow-500 mt-2">
+        This doctor's profile is currently under review. 
+        Please check back later or choose another doctor.
+      </p>
+    </div>
+  )}
+</div>
     </div>
   );
 }

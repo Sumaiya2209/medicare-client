@@ -49,3 +49,23 @@ export const updateDoctorProfile = async (userId, profileData) => {
   if (!res.ok) throw new Error("Failed to update profile");
   return res.json();
 };
+
+
+export const getDoctorSchedule = async (userId) => {
+  const res = await fetch(`${baseUrl}/api/doctors/user/${userId}/schedule`, {
+    credentials: "include",
+  });
+  if (!res.ok) throw new Error("Failed to fetch schedule");
+  return res.json();
+};
+
+export const updateDoctorSchedule = async (userId, availableDays, availableSlots) => {
+  const res = await fetch(`${baseUrl}/api/doctors/user/${userId}/schedule`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ availableDays, availableSlots }),
+  });
+  if (!res.ok) throw new Error("Failed to update schedule");
+  return res.json();
+};

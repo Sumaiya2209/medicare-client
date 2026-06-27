@@ -1,6 +1,6 @@
 "use client";
 
-import {  Bell, Envelope, Gear, House, LayoutSideContentLeft, Magnifier, Person, Stethoscope } from "@gravity-ui/icons";
+import { Bell, Envelope, Gear, House, LayoutSideContentLeft, Magnifier, Person, Stethoscope } from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";
 import { useSession, signOut } from "@/lib/auth-client";
 import Image from "next/image";
@@ -41,7 +41,7 @@ export function DashBoardSideBar() {
         { icon: House, label: "Overview", href: "/dashboard/doctor/overview" },
         { icon: Bell, label: "Manage Schedule", href: "/dashboard/doctor/schedule" },
         { icon: Envelope, label: "Appointment Requests", href: "/dashboard/doctor/appointments" },
-        { icon: Envelope, label: "My Reviews", href: "/dashboard/doctor/reviews" },
+        { icon: Person, label: "Prescriptions", href: "/dashboard/doctor/prescription" },
         { icon: Person, label: "Profile", href: "/dashboard/doctor/profile" },
       ]
       : []),
