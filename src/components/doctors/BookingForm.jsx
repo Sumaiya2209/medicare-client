@@ -46,6 +46,7 @@ export default function BookingForm({ doctor }) {
 
     if (!session?.user) {
       toast.error("Please login to book an appointment.");
+      router.push(`/auth/signin?redirect=/find-doctors/${doctor._id}`);
       return;
     }
 
@@ -139,8 +140,8 @@ export default function BookingForm({ doctor }) {
                     ${isBooked
                       ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed line-through"
                       : isSelected
-                      ? "bg-emerald-700 text-white border-emerald-700"
-                      : "bg-white text-gray-700 border-gray-300 hover:border-emerald-500 hover:text-emerald-600"
+                        ? "bg-emerald-700 text-white border-emerald-700"
+                        : "bg-white text-gray-700 border-gray-300 hover:border-emerald-500 hover:text-emerald-600"
                     }`}
                 >
                   {slot}

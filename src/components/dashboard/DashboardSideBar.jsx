@@ -103,11 +103,11 @@ export function DashBoardSideBar() {
                 key={item.label}
                 href={item.href}
                 className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all
-                  ${isActive
-                    ? "bg-blue-950 text-white"
-                    : "text-gray-800 hover:bg-blue-950 hover:text-white"
+                    ${isActive
+                    ? "bg-blue-950 !text-white"
+                    : "hover:bg-blue-950 hover:!text-white"
                   }
-                `}
+              `}
               >
                 <item.icon className="h-5 w-5" />
                 {item.label}
@@ -121,7 +121,7 @@ export function DashBoardSideBar() {
       <div className="border-t border-zinc-800 pt-4 mt-50">
         <button
           type="button"
-          className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm text-gray-800 hover:bg-blue-950 hover:text-white"
+          className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm hover:bg-blue-950 hover:!text-white"
         >
           <Gear className="h-5 w-5" />
           Settings
@@ -130,7 +130,7 @@ export function DashBoardSideBar() {
         <button
           onClick={handleSignout}
           type="button"
-          className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm text-gray-800 hover:bg-blue-950 hover:text-white"
+          className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm hover:bg-blue-950 hover:!text-white"
         >
           <LayoutSideContentLeft className="h-5 w-5" />
           Sign Out

@@ -151,15 +151,15 @@ export default function RegisterPage() {
       });
 
       setTimeout(() => {
-          if (data?.user?.role === "patient") {
-            router.push("/dashboard/patient");
-          } else if (data?.user?.role === "doctor") {
-            router.push("/dashboard/doctor");
-          } else {
-            router.push("/");
-          }
+        if (data?.user?.role === "patient") {
+          router.push("/dashboard/patient");
+        } else if (data?.user?.role === "doctor") {
+          router.push("/dashboard/doctor");
+        } else {
+          router.push("/");
+        }
 
-          router.refresh();
+        router.refresh();
       }, 1500);
     } catch (error) {
       console.error("Signup error:", error);
@@ -173,7 +173,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <section className="min-h-screen bg-gradient-to-br from-cyan-50 via-white to-blue-100 flex items-center justify-center px-4 py-10">
+    <section className="min-h-screen bg-gradient-to-br from-cyan-50 via-white to-blue-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 flex items-center justify-center px-4 py-10">
       <Card className="w-full max-w-2xl shadow-2xl border border-default-200">
         <Card.Header className="items-center text-center pt-8 pb-2">
           <Card.Title className="text-4xl font-bold mb-6">Sign Up</Card.Title>

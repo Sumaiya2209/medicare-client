@@ -123,7 +123,7 @@ export default function LoginPage() {
   };
 
   return (
-    <section className=" bg-gradient-to-br from-cyan-50 via-white to-blue-100 flex items-center justify-center px-4 py-10">
+    <section className="min-h-screen bg-gradient-to-br from-cyan-50 via-white to-blue-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 flex items-center justify-center px-4 py-10">
       <Card className="w-full max-w-md shadow-2xl border border-default-200">
         <Card.Header className="items-center text-center pt-8 pb-2">
           <Card.Title className="text-4xl font-bold mb-6">Sign In</Card.Title>

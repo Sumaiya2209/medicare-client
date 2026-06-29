@@ -3,7 +3,7 @@
 
 import Image from "next/image";
 import { Button } from "@heroui/react";
-import TipsBg from "@/images/medical-bg.avif";
+import TipsBg from "@/images/medical-bg.png";
 
 const tips = [
   {
